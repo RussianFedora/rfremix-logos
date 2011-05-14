@@ -3,7 +3,7 @@
 Name: rfremix-logos
 Summary: Fedora-related icons and pictures
 Version: 15.0.0
-Release: 2%{?dist}.R
+Release: 3%{?dist}.R
 Group: System Environment/Base
 URL: http://russianfedora.ru/
 Source0: http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.bz2
@@ -153,41 +153,21 @@ touch --no-create %{_kde4_iconsdir}/oxygen ||:
 
 %postun
 if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor || :
-touch --no-create %{_datadir}/icons/Bluecurve || :
-touch --no-create %{_datadir}/icons/Fedora || :
-touch --no-create %{_kde4_iconsdir}/oxygen ||:
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/hicolor/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-  fi
-  if [ -f %{_datadir}/icons/Bluecurve/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Bluecurve || :
-  fi
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen || :
-  fi
-fi
+  touch --no-create %{_datadir}/icons/hicolor || :
+  touch --no-create %{_datadir}/icons/Bluecurve || :
+  touch --no-create %{_datadir}/icons/Fedora || :
+  touch --no-create %{_kde4_iconsdir}/oxygen ||:
+  gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+  gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 fi
 
 %posttrans
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/hicolor/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-  fi
-  if [ -f %{_datadir}/icons/Bluecurve/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Bluecurve || :
-  fi
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen || :
-  fi
-fi
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 
 %files
 %defattr(-, root, root, -)
@@ -224,6 +204,9 @@ fi
 # end i386 bits
 
 %changelog
+* Sat May 14 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 15.0.0-3.R
+- Update icon cache scriptlet
+
 * Mon Apr  4 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 15.0.0-2.R
 - branch RFRemix logos
 
