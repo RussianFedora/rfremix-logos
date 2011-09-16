@@ -1,15 +1,14 @@
-%global codename lovelock
+%global codename verne
 
 Name: rfremix-logos
-Summary: Fedora-related icons and pictures
-Version: 15.0.0
-Release: 2%{?dist}.R
+Summary: RFRemix-related icons and pictures
+Version: 16.0.2
+Release: 1%{?dist}.R
 Group: System Environment/Base
-URL: http://russianfedora.ru/
-Source0: http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.bz2
+URL: https://github.com/Tigro/rfremix-logos
+Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
 License: Licensed only for approved usage, see COPYING for details. 
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 Obsoletes: redhat-logos
 Obsoletes: gnome-logos
@@ -17,12 +16,12 @@ Provides: redhat-logos = %{version}-%{release}
 Provides: gnome-logos = %{version}-%{release}
 Provides: system-logos = %{version}-%{release}
 Provides: fedora-logos = %{version}-%{release}
-
-Obsoletes: fedora-logos
-
 Conflicts: kdebase <= 3.1.5
 Conflicts: anaconda-images <= 10
 Conflicts: redhat-artwork <= 5.0.5
+
+Obsoletes: fedora-logos
+
 # For splashtolss.sh
 BuildRequires: syslinux-perl, netpbm-progs
 Requires(post): coreutils
@@ -54,8 +53,6 @@ redistribution of this package and its contents.
 make bootloader/fedora.icns
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 # should be ifarch i386
 mkdir -p $RPM_BUILD_ROOT/boot/grub
 install -p -m 644 -D bootloader/splash.xpm.gz $RPM_BUILD_ROOT/boot/grub/splash.xpm.gz
@@ -138,12 +135,11 @@ popd
 mkdir -p $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/
 install -p -m 644 kde-splash/Leonidas-fedora.png $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
 
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
+cp -a fedora/*.svg $RPM_BUILD_ROOT%{_datadir}/%{name}
+
 # save some dup'd icons
 /usr/sbin/hardlink -v %{buildroot}/
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
@@ -153,44 +149,23 @@ touch --no-create %{_kde4_iconsdir}/oxygen ||:
 
 %postun
 if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor || :
-touch --no-create %{_datadir}/icons/Bluecurve || :
-touch --no-create %{_datadir}/icons/Fedora || :
-touch --no-create %{_kde4_iconsdir}/oxygen ||:
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/hicolor/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-  fi
-  if [ -f %{_datadir}/icons/Bluecurve/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Bluecurve || :
-  fi
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen || :
-  fi
-fi
+  touch --no-create %{_datadir}/icons/hicolor || :
+  touch --no-create %{_datadir}/icons/Bluecurve || :
+  touch --no-create %{_datadir}/icons/Fedora || :
+  touch --no-create %{_kde4_iconsdir}/oxygen ||:
+  gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+  gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 fi
 
 %posttrans
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/hicolor/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-  fi
-  if [ -f %{_datadir}/icons/Bluecurve/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Bluecurve || :
-  fi
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen || :
-  fi
-fi
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 
 %files
-%defattr(-, root, root, -)
 %doc COPYING
 %config(noreplace) %{_sysconfdir}/favicon.png
 %{_datadir}/firstboot/themes/fedora-%{codename}/
@@ -202,30 +177,116 @@ fi
 %{_datadir}/anaconda/pixmaps/*
 %{_datadir}/anaconda/boot/splash.lss
 %{_datadir}/anaconda/boot/syslinux-splash.png
-%{_datadir}/anaconda/boot/syslinux-vesa-splash.jpg
+%{_datadir}/anaconda/boot/splash.png
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/Bluecurve/*/apps/*
 %{_datadir}/icons/Fedora/*/apps/
 %{_datadir}/icons/Fedora/*/places/*
 %{_datadir}/gnome-screensaver/*
+%{_datadir}/%{name}/
 
 # we multi-own these directories, so as not to require the packages that
 # provide them, thereby dragging in excess dependencies.
-%dir %{_datadir}/icons/Bluecurve
-%dir %{_datadir}/icons/hicolor
+%dir %{_datadir}/icons/Bluecurve/
+%dir %{_datadir}/icons/Bluecurve/16x16/
+%dir %{_datadir}/icons/Bluecurve/16x16/apps/
+%dir %{_datadir}/icons/Bluecurve/22x22/
+%dir %{_datadir}/icons/Bluecurve/22x22/apps/
+%dir %{_datadir}/icons/Bluecurve/24x24/
+%dir %{_datadir}/icons/Bluecurve/24x24/apps/
+%dir %{_datadir}/icons/Bluecurve/32x32/
+%dir %{_datadir}/icons/Bluecurve/32x32/apps/
+%dir %{_datadir}/icons/Bluecurve/36x36/
+%dir %{_datadir}/icons/Bluecurve/36x36/apps/
+%dir %{_datadir}/icons/Bluecurve/48x48/
+%dir %{_datadir}/icons/Bluecurve/48x48/apps/
+%dir %{_datadir}/icons/Bluecurve/96x96/
+%dir %{_datadir}/icons/Bluecurve/96x96/apps/
+%dir %{_datadir}/icons/Bluecurve/256x256/
+%dir %{_datadir}/icons/Bluecurve/256x256/apps/
+%dir %{_datadir}/icons/Fedora/
+%dir %{_datadir}/icons/Fedora/16x16/
+%dir %{_datadir}/icons/Fedora/16x16/places/
+%dir %{_datadir}/icons/Fedora/22x22/
+%dir %{_datadir}/icons/Fedora/22x22/places/
+%dir %{_datadir}/icons/Fedora/24x24/
+%dir %{_datadir}/icons/Fedora/24x24/places/
+%dir %{_datadir}/icons/Fedora/32x32/
+%dir %{_datadir}/icons/Fedora/32x32/places/
+%dir %{_datadir}/icons/Fedora/36x36/
+%dir %{_datadir}/icons/Fedora/36x36/places/
+%dir %{_datadir}/icons/Fedora/48x48/
+%dir %{_datadir}/icons/Fedora/48x48/places/
+%dir %{_datadir}/icons/Fedora/96x96/
+%dir %{_datadir}/icons/Fedora/96x96/places/
+%dir %{_datadir}/icons/Fedora/256x256/
+%dir %{_datadir}/icons/Fedora/256x256/places/
+%dir %{_datadir}/icons/Fedora/scalable/
+%dir %{_datadir}/icons/Fedora/scalable/places/
+%dir %{_datadir}/icons/hicolor/
+%dir %{_datadir}/icons/hicolor/16x16/
+%dir %{_datadir}/icons/hicolor/16x16/apps/
+%dir %{_datadir}/icons/hicolor/22x22/
+%dir %{_datadir}/icons/hicolor/22x22/apps/
+%dir %{_datadir}/icons/hicolor/24x24/
+%dir %{_datadir}/icons/hicolor/24x24/apps/
+%dir %{_datadir}/icons/hicolor/32x32/
+%dir %{_datadir}/icons/hicolor/32x32/apps/
+%dir %{_datadir}/icons/hicolor/36x36/
+%dir %{_datadir}/icons/hicolor/36x36/apps/
+%dir %{_datadir}/icons/hicolor/48x48/
+%dir %{_datadir}/icons/hicolor/48x48/apps/
+%dir %{_datadir}/icons/hicolor/96x96/
+%dir %{_datadir}/icons/hicolor/96x96/apps/
+%dir %{_datadir}/icons/hicolor/256x256/
+%dir %{_datadir}/icons/hicolor/256x256/apps/
+%dir %{_datadir}/icons/hicolor/scalable/
+%dir %{_datadir}/icons/hicolor/scalable/apps/
 %dir %{_datadir}/anaconda
 %dir %{_datadir}/anaconda/boot/
 %dir %{_datadir}/anaconda/pixmaps/
+%dir %{_datadir}/firstboot/
+%dir %{_datadir}/firstboot/themes/
+%dir %{_datadir}/gnome-screensaver/
+%dir %{_datadir}/plymouth/
+%dir %{_datadir}/plymouth/themes/
+%dir %{_kde4_sharedir}/kde4/
 %dir %{_kde4_appsdir}
 %dir %{_kde4_appsdir}/ksplash
-%dir %{_kde4_appsdir}/ksplash/Themes
+%dir %{_kde4_appsdir}/ksplash/Themes/
+%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/
+%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
 # should be ifarch i386
 /boot/grub/splash.xpm.gz
 # end i386 bits
 
 %changelog
-* Mon Apr  4 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 15.0.0-2.R
-- branch RFRemix logos
+* Fri Sep 16 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-1.R
+- repack for RFRemix with Russian Fedora logos
+
+* Tue Sep 13 2011 Tom Callaway <spot@fedoraproject.org> - 16.0.2-1
+- 16.0.2
+- moved syslinux-vesa-splash.jpg to boot/splash.png
+
+* Wed Sep  7 2011 Tom Callaway <spot@fedoraproject.org> - 16.0.1-1
+- 16.0.1
+- updated beta art and codename
+
+* Fri Aug  5 2011 Tom Callaway <spot@fedoraproject.org> - 16.0.0-1
+- 16.0.0
+- updated progress_first.png
+- added script and svg to generate new progress_first.png
+
+* Wed Jun 15 2011 Tom Callaway <spot@fedoraproject.org> - 15.0.1-1
+- 15.0.1
+- add svg logos
+- get the last few unowned directories
+
+* Thu Jun 02 2011 Tom Callaway <spot@fedoraproject.org> - 15.0.0-4
+- fix unowned directories (bz 709510)
+
+* Sat May 07 2011 Christopher Aillon <caillon@redhat.com> - 15.0.0-3
+- Update icon cache scriptlet
 
 * Wed Mar 30 2011 Tom Callaway <spot@fedoraproject.org>
 - Provides/Obsoletes gnome-logos (bz 692231)
