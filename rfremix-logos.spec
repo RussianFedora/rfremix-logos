@@ -3,7 +3,7 @@
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
 Version: 16.0.2
-Release: 1%{?dist}.R
+Release: 1%{?dist}.1.R
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
@@ -141,6 +141,11 @@ cp -a fedora/*.svg $RPM_BUILD_ROOT%{_datadir}/%{name}
 # save some dup'd icons
 /usr/sbin/hardlink -v %{buildroot}/
 
+# hack
+pushd $RPM_BUILD_ROOT%{_datadir}/anaconda/boot/
+ln -s syslinux-splash.png syslinux-vesa-splash.jpg
+popd
+
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
 touch --no-create %{_datadir}/icons/Bluecurve || :
@@ -178,6 +183,7 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/anaconda/boot/splash.lss
 %{_datadir}/anaconda/boot/syslinux-splash.png
 %{_datadir}/anaconda/boot/splash.png
+%{_datadir}/anaconda/boot/syslinux-vesa-splash.jpg
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/Bluecurve/*/apps/*
 %{_datadir}/icons/Fedora/*/apps/
@@ -261,6 +267,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Mon Sep 19 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-1.1.R
+- temporarily link to splash.png
+
 * Fri Sep 16 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-1.R
 - repack for RFRemix with Russian Fedora logos
 
