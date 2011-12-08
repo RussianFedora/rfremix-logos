@@ -3,10 +3,12 @@
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
 Version: 16.0.2
-Release: 1%{?dist}.1.R
+Release: 2%{?dist}.R
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
+Source1: fedora_logo.svg
+Source2: fedora_logo_darkbackground.svg
 License: Licensed only for approved usage, see COPYING for details. 
 
 BuildArch: noarch
@@ -146,6 +148,12 @@ pushd $RPM_BUILD_ROOT%{_datadir}/anaconda/boot/
 ln -s syslinux-splash.png syslinux-vesa-splash.jpg
 popd
 
+mv $RPM_BUILD_ROOT%{_datadir}/%{name} \
+  $RPM_BUILD_ROOT%{_datadir}/fedora-logos
+
+install -m644 %{SOURCE1} %{SOURCE2} \
+  $RPM_BUILD_ROOT%{_datadir}/fedora-logos/
+
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
 touch --no-create %{_datadir}/icons/Bluecurve || :
@@ -189,7 +197,7 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/icons/Fedora/*/apps/
 %{_datadir}/icons/Fedora/*/places/*
 %{_datadir}/gnome-screensaver/*
-%{_datadir}/%{name}/
+%{_datadir}/fedora-logos/
 
 # we multi-own these directories, so as not to require the packages that
 # provide them, thereby dragging in excess dependencies.
@@ -267,6 +275,10 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Thu Dec  8 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-2.R
+- fix log svg dir name
+- rfremixify svg logos
+
 * Mon Sep 19 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-1.1.R
 - temporarily link to splash.png
 
