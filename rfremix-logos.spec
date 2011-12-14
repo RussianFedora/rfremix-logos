@@ -3,7 +3,7 @@
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
 Version: 16.0.2
-Release: 2%{?dist}.R
+Release: 3%{?dist}.R
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
@@ -275,6 +275,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Wed Dec 14 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-3.R
+- new vector RFRemix logos. Thanks Nastya
+
 * Thu Dec  8 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-2.R
 - fix log svg dir name
 - rfremixify svg logos
