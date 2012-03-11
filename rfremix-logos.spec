@@ -2,13 +2,11 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 16.0.2
-Release: 3%{?dist}.R
+Version: 17.0.0
+Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
-Source1: fedora_logo.svg
-Source2: fedora_logo_darkbackground.svg
 License: Licensed only for approved usage, see COPYING for details. 
 
 BuildArch: noarch
@@ -143,16 +141,8 @@ cp -a fedora/*.svg $RPM_BUILD_ROOT%{_datadir}/%{name}
 # save some dup'd icons
 /usr/sbin/hardlink -v %{buildroot}/
 
-# hack
-pushd $RPM_BUILD_ROOT%{_datadir}/anaconda/boot/
-ln -s syslinux-splash.png syslinux-vesa-splash.jpg
-popd
-
 mv $RPM_BUILD_ROOT%{_datadir}/%{name} \
   $RPM_BUILD_ROOT%{_datadir}/fedora-logos
-
-install -m644 %{SOURCE1} %{SOURCE2} \
-  $RPM_BUILD_ROOT%{_datadir}/fedora-logos/
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
@@ -191,7 +181,6 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/anaconda/boot/splash.lss
 %{_datadir}/anaconda/boot/syslinux-splash.png
 %{_datadir}/anaconda/boot/splash.png
-%{_datadir}/anaconda/boot/syslinux-vesa-splash.jpg
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/Bluecurve/*/apps/*
 %{_datadir}/icons/Fedora/*/apps/
@@ -275,6 +264,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Sun Mar 11 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.0-1.R
+- update to 17.0.0
+
 * Wed Dec 14 2011 Arkady L. Shane <ashejn@russianfedora.ru> - 16.0.2-3.R
 - new vector RFRemix logos. Thanks Nastya
 
