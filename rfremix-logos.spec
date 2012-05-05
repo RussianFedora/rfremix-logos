@@ -6,7 +6,7 @@ Version: 17.0.1
 Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
-Source0: http://download.rfremix.ru/storage/rfremix-logos/%{name}-%{version}.tar.bz2
+Source0: %{name}-%{version}.tar.bz2
 License: Licensed only for approved usage, see COPYING for details. 
 
 BuildArch: noarch
