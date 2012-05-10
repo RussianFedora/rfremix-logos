@@ -2,7 +2,7 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 17.0.1
+Version: 17.0.2
 Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
@@ -56,6 +56,9 @@ make bootloader/fedora.icns
 # should be ifarch i386
 mkdir -p $RPM_BUILD_ROOT/boot/grub
 install -p -m 644 -D bootloader/splash.xpm.gz $RPM_BUILD_ROOT/boot/grub/splash.xpm.gz
+mkdir -p $RPM_BUILD_ROOT/boot/grub2/themes/system/
+install -p -m 644 bootloader/background.png $RPM_BUILD_ROOT/boot/grub2/themes/system/background.png
+
 # end i386 bits
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/firstboot/themes/fedora-%{codename}/
@@ -267,6 +270,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Thu May 10 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.2-1.R
+- add grub2 background.png
+
 * Sat May  5 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.1-1.R
 - add apple efi label images
 - fix copyright date on splash (bz815012)
