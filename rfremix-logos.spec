@@ -268,6 +268,7 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # should be ifarch i386
 /boot/grub/splash.xpm.gz
 # end i386 bits
+/boot/grub2/themes/system/background.png
 
 %changelog
 * Thu May 10 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.2-1.R
