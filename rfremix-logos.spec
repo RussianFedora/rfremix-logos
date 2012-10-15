@@ -2,8 +2,8 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 17.0.2
-Release: 1.1%{?dist}
+Version: 17.0.3
+Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: %{name}-%{version}.tar.bz2
@@ -54,10 +54,17 @@ make bootloader/fedora.icns
 
 %install
 # should be ifarch i386
+%if 0%{?fedora} <= 17
 mkdir -p $RPM_BUILD_ROOT/boot/grub
 install -p -m 644 -D bootloader/splash.xpm.gz $RPM_BUILD_ROOT/boot/grub/splash.xpm.gz
+%endif
 mkdir -p $RPM_BUILD_ROOT/boot/grub2/themes/system/
 install -p -m 644 bootloader/background.png $RPM_BUILD_ROOT/boot/grub2/themes/system/background.png
+pushd $RPM_BUILD_ROOT/boot/grub2/themes/system/
+# We have to do a cp here instead of an ls because some envs require that
+# /boot is VFAT, which doesn't support symlinks.
+cp -a background.png fireworks.png
+popd
 
 # end i386 bits
 
@@ -138,17 +145,17 @@ pushd $RPM_BUILD_ROOT%{_datadir}/icons/Fedora/scalable/places/
 ln -s ../../../hicolor/scalable/apps/start-here.svg .
 popd
 
-mkdir -p $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/
-install -p -m 644 kde-splash/Leonidas-fedora.png $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
-
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp -a fedora/*.svg $RPM_BUILD_ROOT%{_datadir}/%{name}
+
+cp -a css3 $RPM_BUILD_ROOT%{_datadir}/%{name}/
 
 # save some dup'd icons
 /usr/sbin/hardlink -v %{buildroot}/
 
-mv $RPM_BUILD_ROOT%{_datadir}/%{name} \
-  $RPM_BUILD_ROOT%{_datadir}/fedora-logos
+# needs for RFRemix!!!
+mv %{buildroot}%{_datadir}/%{name} \
+	%{buildroot}%{_datadir}/fedora-logos
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
@@ -180,7 +187,6 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/firstboot/themes/fedora-%{codename}/
 %{_datadir}/plymouth/themes/charge/
 %{_kde4_iconsdir}/oxygen/
-%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
 
 %{_datadir}/pixmaps/*
 %{_datadir}/anaconda/pixmaps/*
@@ -259,18 +265,24 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %dir %{_datadir}/gnome-screensaver/
 %dir %{_datadir}/plymouth/
 %dir %{_datadir}/plymouth/themes/
-%dir %{_kde4_sharedir}/kde4/
-%dir %{_kde4_appsdir}
-%dir %{_kde4_appsdir}/ksplash
-%dir %{_kde4_appsdir}/ksplash/Themes/
-%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/
-%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
+# %dir %{_kde4_sharedir}/kde4/
+# %dir %{_kde4_appsdir}
+# %dir %{_kde4_appsdir}/ksplash
+# %dir %{_kde4_appsdir}/ksplash/Themes/
+# %dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/
+# %dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
 # should be ifarch i386
+%if 0%{?fedora} <= 17
 /boot/grub/splash.xpm.gz
-# end i386 bits
+%endif
 /boot/grub2/themes/system/background.png
+/boot/grub2/themes/system/fireworks.png
+# end i386 bits
 
 %changelog
+* Mon Oct 15 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.3-1.R
+- update to 17.0.3
+
 * Sat May 12 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.2-1.1.R
 - update system logo
 
