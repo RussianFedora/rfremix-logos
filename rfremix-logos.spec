@@ -1,4 +1,4 @@
-%global codename verne
+%global codename sphericalcow
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
