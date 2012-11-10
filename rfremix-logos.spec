@@ -3,7 +3,7 @@
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
 Version: 17.0.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: %{name}-%{version}.tar.bz2
@@ -280,6 +280,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Sun Nov 11 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.3-2.R
+- new logo mini
+
 * Mon Oct 15 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.3-1.R
 - update to 17.0.3
 
