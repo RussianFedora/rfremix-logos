@@ -2,8 +2,8 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 17.0.3
-Release: 2%{?dist}
+Version: 19.0.1
+Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: %{name}-%{version}.tar.bz2
@@ -94,6 +94,12 @@ for i in pixmaps/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/pixmaps
 done
 
+# when we get translated rnotes, I'll need to rework this, but this will do for now
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
+for i in rnotes/* ; do
+  install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
+done
+
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge
 for i in plymouth/charge/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge
@@ -145,13 +151,18 @@ pushd $RPM_BUILD_ROOT%{_datadir}/icons/Fedora/scalable/places/
 ln -s ../../../hicolor/scalable/apps/start-here.svg .
 popd
 
+# DO NOT REMOVE THIS ICON!!! We still support the Leonidas and Solar themes!
+mkdir -p $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/
+install -p -m 644 kde-splash/Leonidas-fedora.png $RPM_BUILD_ROOT%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
+
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp -a fedora/*.svg $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 cp -a css3 $RPM_BUILD_ROOT%{_datadir}/%{name}/
 
 # save some dup'd icons
-/usr/sbin/hardlink -v %{buildroot}/
+# Except in /boot. Because some people think it is fun to use VFAT for /boot.
+/usr/sbin/hardlink -v %{buildroot}/usr
 
 # needs for RFRemix!!!
 mv %{buildroot}%{_datadir}/%{name} \
@@ -187,6 +198,8 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/firstboot/themes/fedora-%{codename}/
 %{_datadir}/plymouth/themes/charge/
 %{_kde4_iconsdir}/oxygen/
+# DO NOT REMOVE THIS ICON!!! We still support the Leonidas and Solar themes!
+%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
 
 %{_datadir}/pixmaps/*
 %{_datadir}/anaconda/pixmaps/*
@@ -265,12 +278,12 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %dir %{_datadir}/gnome-screensaver/
 %dir %{_datadir}/plymouth/
 %dir %{_datadir}/plymouth/themes/
-# %dir %{_kde4_sharedir}/kde4/
-# %dir %{_kde4_appsdir}
-# %dir %{_kde4_appsdir}/ksplash
-# %dir %{_kde4_appsdir}/ksplash/Themes/
-# %dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/
-# %dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
+# DO NOT REMOVE THESE DIRS!!! We still support the Leonidas and Solar themes!
+%dir %{_kde4_appsdir}
+%dir %{_kde4_appsdir}/ksplash
+%dir %{_kde4_appsdir}/ksplash/Themes/
+%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/
+%dir %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
 # should be ifarch i386
 %if 0%{?fedora} <= 17
 /boot/grub/splash.xpm.gz
@@ -280,6 +293,11 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Tue Apr  9 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.1-1.R
+- update to 19.0.1
+  sync with upstream
+  rfremixify Leonidas logo
+
 * Sun Nov 11 2012 Arkady L. Shane <ashejn@russianfedora.ru> - 17.0.3-2.R
 - new logo mini
 
