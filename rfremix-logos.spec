@@ -2,7 +2,7 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 19.0.1
+Version: 19.0.4
 Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
