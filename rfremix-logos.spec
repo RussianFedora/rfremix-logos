@@ -65,7 +65,6 @@ pushd $RPM_BUILD_ROOT/boot/grub2/themes/system/
 # /boot is VFAT, which doesn't support symlinks.
 cp -a background.png fireworks.png
 popd
-
 # end i386 bits
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/firstboot/themes/fedora-%{codename}/
@@ -79,16 +78,6 @@ install -p -m 644 bootloader/fedora.icns $RPM_BUILD_ROOT%{_datadir}/pixmaps/boot
 # pngtopnm foo.png | ppmtoapplevol > foo.vol
 install -p -m 644 bootloader/fedora.vol bootloader/fedora-media.vol $RPM_BUILD_ROOT%{_datadir}/pixmaps/bootloader
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps/splash
-for i in gnome-splash/* ; do
-  install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/pixmaps/splash
-done
-
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/gnome-screensaver
-for i in gnome-screensaver/* ; do
-  install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/gnome-screensaver
-done
-
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
 for i in pixmaps/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/pixmaps
@@ -99,6 +88,9 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
 for i in rnotes/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
 done
+
+# The hal rnote is a placeholder. "the HAL banner is inappropriate and must die"
+rm -rf $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en/Hal.jpg
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge
 for i in plymouth/charge/* ; do
@@ -210,7 +202,6 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/icons/Bluecurve/*/apps/*
 %{_datadir}/icons/Fedora/*/apps/
 %{_datadir}/icons/Fedora/*/places/*
-%{_datadir}/gnome-screensaver/*
 %{_datadir}/fedora-logos/
 
 # we multi-own these directories, so as not to require the packages that
@@ -275,7 +266,6 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %dir %{_datadir}/anaconda/pixmaps/
 %dir %{_datadir}/firstboot/
 %dir %{_datadir}/firstboot/themes/
-%dir %{_datadir}/gnome-screensaver/
 %dir %{_datadir}/plymouth/
 %dir %{_datadir}/plymouth/themes/
 # DO NOT REMOVE THESE DIRS!!! We still support the Leonidas and Solar themes!
@@ -293,6 +283,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 # end i386 bits
 
 %changelog
+* Mon Jul  1 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.4-1.R
+- sync with upstream 19.0.4 version
+
 * Tue Apr  9 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.1-1.R
 - update to 19.0.1
   sync with upstream
