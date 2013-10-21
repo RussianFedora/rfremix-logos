@@ -3,7 +3,7 @@
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
 Version: 19.0.4
-Release: 1%{?dist}
+Release: 4%{?dist}
 Group: System Environment/Base
 URL: https://github.com/Tigro/rfremix-logos
 Source0: %{name}-%{version}.tar.bz2
@@ -33,18 +33,13 @@ BuildRequires: ImageMagick
 BuildRequires: libicns-utils
 
 %description
-The fedora-logos package contains image files which incorporate the 
-Fedora trademarks (the "Marks"). The Marks are trademarks or registered 
-trademarks of Red Hat, Inc. in the United States and other countries and 
-are used by permission.
+Ok. This is logos for RFRemix.
 
-This package and its content may not be distributed with anything but
-unmodified packages from Fedora Project. It can be used in a Fedora Spin, 
-but not in a Fedora Remix. If necessary, this package can be replaced by 
-the more liberally licensed generic-logos package.
+%package httpd
+Summary: RFRemix-related icons and pictures used by httpd
 
-See the included COPYING file for full information on copying and 
-redistribution of this package and its contents.
+%description httpd
+Ok. This is logos for RFRemix.
 
 %prep
 %setup -q
@@ -194,6 +189,7 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
 
 %{_datadir}/pixmaps/*
+%exclude %{_datadir}/pixmaps/poweredby.png
 %{_datadir}/anaconda/pixmaps/*
 %{_datadir}/anaconda/boot/splash.lss
 %{_datadir}/anaconda/boot/syslinux-splash.png
@@ -282,7 +278,15 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 /boot/grub2/themes/system/fireworks.png
 # end i386 bits
 
+%files httpd
+%doc COPYING
+%{_datadir}/pixmaps/poweredby.png
+
+
 %changelog
+* Mon Oct 21 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.4-4.R
+- sync with upstream
+
 * Mon Jul  1 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.4-1.R
 - sync with upstream 19.0.4 version
 
