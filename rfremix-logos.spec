@@ -2,14 +2,13 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 19.0.4
-Release: 4%{?dist}
+Version: 21.0.1
+Release: 1%{?dist}
 Group: System Environment/Base
-URL: https://github.com/Tigro/rfremix-logos
+URL: https://github.com/RussianFedora/rfremix-logos
 Source0: %{name}-%{version}.tar.bz2
 License: Licensed only for approved usage, see COPYING for details. 
 
-BuildArch: noarch
 Obsoletes: redhat-logos
 Obsoletes: gnome-logos
 Provides: redhat-logos = %{version}-%{release}
@@ -23,7 +22,9 @@ Conflicts: redhat-artwork <= 5.0.5
 Obsoletes: fedora-logos
 
 # For splashtolss.sh
+%ifarch x86_64 i686
 BuildRequires: syslinux-perl, netpbm-progs
+%endif
 Requires(post): coreutils
 BuildRequires: hardlink
 # For _kde4_* macros:
@@ -37,6 +38,10 @@ Ok. This is logos for RFRemix.
 
 %package httpd
 Summary: RFRemix-related icons and pictures used by httpd
+Provides: system-logos-httpd = %{version}-%{release}
+Provides: fedora-logos-httpd = %{version}-%{release}
+Obsoletes: fedora-logos-httpd
+BuildArch: noarch
 
 %description httpd
 Ok. This is logos for RFRemix.
@@ -78,10 +83,9 @@ for i in pixmaps/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/pixmaps
 done
 
-# when we get translated rnotes, I'll need to rework this, but this will do for now
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
 for i in rnotes/* ; do
-  install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/$i
+  install -p -m 644 $i/* $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/$i
 done
 
 # The hal rnote is a placeholder. "the HAL banner is inappropriate and must die"
@@ -126,6 +130,10 @@ install -p -m 644 icons/hicolor/scalable/apps/xfce4_xicon1.svg $RPM_BUILD_ROOT%{
 install -p -m 644 icons/hicolor/scalable/apps/fedora-logo-icon.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/start-here.svg
 
 (cd anaconda; make DESTDIR=$RPM_BUILD_ROOT install)
+
+%ifarch i686 x86_64
+(cd anaconda; make DESTDIR=$RPM_BUILD_ROOT install-lss)
+%endif
 
 for i in 16 22 24 32 36 48 96 256 ; do
   mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/Fedora/${i}x${i}/places
@@ -191,7 +199,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/*
 %exclude %{_datadir}/pixmaps/poweredby.png
 %{_datadir}/anaconda/pixmaps/*
+%ifarch x86_64 i686
 %{_datadir}/anaconda/boot/splash.lss
+%endif
 %{_datadir}/anaconda/boot/syslinux-splash.png
 %{_datadir}/anaconda/boot/splash.png
 %{_datadir}/icons/hicolor/*/apps/*
@@ -282,8 +292,11 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %doc COPYING
 %{_datadir}/pixmaps/poweredby.png
 
-
 %changelog
+* Tue Nov 19 2013 Tom Callaway <spot@fedoraproject.org> - 21.0.1-1.R
+- make arch specific package so that it always builds
+- add lang specific rnotes
+
 * Mon Oct 21 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.0.4-4.R
 - sync with upstream
 
