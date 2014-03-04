@@ -1,14 +1,16 @@
 %global codename sphericalcow
+# Package is only arch specific due to missing deps on arm
+# Debuginfo package is useless.
+%global debug_package %{nil}
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 21.0.1
+Version: 21.0.3
 Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/RussianFedora/rfremix-logos
-Source0: %{name}-%{version}.tar.bz2
+Source0: %{name}-%{version}.tar.xz
 License: Licensed only for approved usage, see COPYING for details. 
-
 Obsoletes: redhat-logos
 Obsoletes: gnome-logos
 Provides: redhat-logos = %{version}-%{release}
@@ -29,6 +31,8 @@ Requires(post): coreutils
 BuildRequires: hardlink
 # For _kde4_* macros:
 BuildRequires: kde-filesystem
+# For optimizing png files
+BuildRequires: optipng
 # For generating the EFI icon
 BuildRequires: ImageMagick
 BuildRequires: libicns-utils
@@ -88,9 +92,6 @@ for i in rnotes/* ; do
   install -p -m 644 $i/* $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/$i
 done
 
-# The hal rnote is a placeholder. "the HAL banner is inappropriate and must die"
-rm -rf $RPM_BUILD_ROOT%{_datadir}/anaconda/pixmaps/rnotes/en/Hal.jpg
-
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge
 for i in plymouth/charge/* ; do
   install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge
@@ -130,7 +131,6 @@ install -p -m 644 icons/hicolor/scalable/apps/xfce4_xicon1.svg $RPM_BUILD_ROOT%{
 install -p -m 644 icons/hicolor/scalable/apps/fedora-logo-icon.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/start-here.svg
 
 (cd anaconda; make DESTDIR=$RPM_BUILD_ROOT install)
-
 %ifarch i686 x86_64
 (cd anaconda; make DESTDIR=$RPM_BUILD_ROOT install-lss)
 %endif
@@ -192,6 +192,8 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/favicon.png
 %{_datadir}/firstboot/themes/fedora-%{codename}/
 %{_datadir}/plymouth/themes/charge/
+# No one else before us owns this, so we shall.
+%dir %{_kde4_sharedir}/kde4/
 %{_kde4_iconsdir}/oxygen/
 # DO NOT REMOVE THIS ICON!!! We still support the Leonidas and Solar themes!
 %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
@@ -293,6 +295,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Tue Mar  4 2014 Arkady L. Shane <ashejn@russianfedora.ru> - 21.0.3-1.R
+- sync with upstream
+
 * Tue Nov 19 2013 Tom Callaway <spot@fedoraproject.org> - 21.0.1-1.R
 - make arch specific package so that it always builds
 - add lang specific rnotes
