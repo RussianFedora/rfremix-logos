@@ -5,7 +5,7 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 21.0.5
+Version: 22.0.0
 Release: 1%{?dist}
 Group: System Environment/Base
 URL: https://github.com/RussianFedora/rfremix-logos
@@ -287,6 +287,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Fri May  1 2015 Tom Callaway <spot@fedoraproject.org> - 22.0.0-1.R
+- fix "join us" rnote to have new url (thanks to Zamir SUN)
+
 * Wed Nov 19 2014 Tom Callaway <spot@fedoraproject.org> - 21.0.5-1.R
 - add fedora logo for background overlay
 - move anaconda logo files into hicolor (drop old "Fedora" dir)
