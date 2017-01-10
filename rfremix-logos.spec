@@ -5,8 +5,8 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 22.0.0
-Release: 1%{?dist}
+Version: 26.0.0
+Release: 1%{?dist}.R
 Group: System Environment/Base
 URL: https://github.com/RussianFedora/rfremix-logos
 Source0: %{name}-%{version}.tar.xz
@@ -33,6 +33,7 @@ BuildRequires: hardlink
 BuildRequires: kde-filesystem
 # For optimizing png files
 BuildRequires: optipng
+BuildRequires: zopfli
 # For generating the EFI icon
 BuildRequires: ImageMagick
 BuildRequires: libicns-utils
@@ -130,6 +131,17 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/places/
 pushd $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/places/
 ln -s ../apps/start-here.svg .
 popd
+
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/icewm_taskbar_logos_fedora.tar.gz $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux_fedora.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux_fedora_logo.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks/taskbar/
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks-2px/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/icewm_taskbar_logos_fedora.tar.gz $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks-2px/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks-2px/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux_fedora.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks-2px/taskbar/
+install -p -m 644 icons/clearlooks/taskbar/linux_fedora_logo.xpm $RPM_BUILD_ROOT%{_datadir}/icewm/themes/clearlooks-2px/taskbar/
 
 (cd anaconda; make DESTDIR=$RPM_BUILD_ROOT install)
 %ifarch i686 x86_64
@@ -268,6 +280,8 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %dir %{_datadir}/firstboot/themes/
 %dir %{_datadir}/plymouth/
 %dir %{_datadir}/plymouth/themes/
+%{_datadir}/icewm/themes/clearlooks/taskbar/*
+%{_datadir}/icewm/themes/clearlooks-2px/taskbar/*
 # DO NOT REMOVE THESE DIRS!!! We still support the Leonidas and Solar themes!
 %dir %{_kde4_appsdir}
 %dir %{_kde4_appsdir}/ksplash
@@ -287,6 +301,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Tue Jan 03 2017 Tom Callaway <spot@fedoraproject.org> - 26.0.0-1.R
+- move icewm fedora logos into this package
+
 * Fri May  1 2015 Tom Callaway <spot@fedoraproject.org> - 22.0.0-1.R
 - fix "join us" rnote to have new url (thanks to Zamir SUN)
 
