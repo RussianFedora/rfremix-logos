@@ -5,7 +5,7 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 26.0.0
+Version: 26.0.1
 Release: 1%{?dist}.R
 Group: System Environment/Base
 URL: https://github.com/RussianFedora/rfremix-logos
@@ -301,6 +301,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Tue May 23 2017 Tom Callaway <spot@fedoraproject.org> - 26.0.1-1.R
+- update to 26.0.1, add fedora/fedora_lightbackground.svg
+
 * Tue Jan 03 2017 Tom Callaway <spot@fedoraproject.org> - 26.0.0-1.R
 - move icewm fedora logos into this package
 
