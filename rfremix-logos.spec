@@ -5,8 +5,8 @@
 
 Name: rfremix-logos
 Summary: RFRemix-related icons and pictures
-Version: 28.0.2
-Release: 3%{?dist}.R
+Version: 28.0.3
+Release: 1%{?dist}.R
 Group: System Environment/Base
 URL: https://github.com/RussianFedora/rfremix-logos
 Source0: %{name}-%{version}.tar.xz
@@ -301,6 +301,9 @@ gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Thu Apr 12 2018 Tom Callaway <spot@fedoraproject.org> - 28.0.3-1.R
+- update to 28.0.3 to fix server image
+
 * Sun Mar 25 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28.0.2-3.R
 - update for RFRemix 28
 
